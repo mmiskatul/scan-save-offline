@@ -9,38 +9,180 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as ScanRouteImport } from './routes/scan'
+import { Route as PreviewRouteImport } from './routes/preview'
+import { Route as PagesRouteImport } from './routes/pages'
+import { Route as EditRouteImport } from './routes/edit'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DocumentsIndexRouteImport } from './routes/documents.index'
+import { Route as DocumentsIdRouteImport } from './routes/documents.$id'
+import { Route as DocumentsIdOcrRouteImport } from './routes/documents.$id.ocr'
 
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScanRoute = ScanRouteImport.update({
+  id: '/scan',
+  path: '/scan',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PreviewRoute = PreviewRouteImport.update({
+  id: '/preview',
+  path: '/preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PagesRoute = PagesRouteImport.update({
+  id: '/pages',
+  path: '/pages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EditRoute = EditRouteImport.update({
+  id: '/edit',
+  path: '/edit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DocumentsIndexRoute = DocumentsIndexRouteImport.update({
+  id: '/documents/',
+  path: '/documents/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DocumentsIdRoute = DocumentsIdRouteImport.update({
+  id: '/documents/$id',
+  path: '/documents/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DocumentsIdOcrRoute = DocumentsIdOcrRouteImport.update({
+  id: '/ocr',
+  path: '/ocr',
+  getParentRoute: () => DocumentsIdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/edit': typeof EditRoute
+  '/pages': typeof PagesRoute
+  '/preview': typeof PreviewRoute
+  '/scan': typeof ScanRoute
+  '/settings': typeof SettingsRoute
+  '/documents/$id': typeof DocumentsIdRouteWithChildren
+  '/documents/': typeof DocumentsIndexRoute
+  '/documents/$id/ocr': typeof DocumentsIdOcrRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/edit': typeof EditRoute
+  '/pages': typeof PagesRoute
+  '/preview': typeof PreviewRoute
+  '/scan': typeof ScanRoute
+  '/settings': typeof SettingsRoute
+  '/documents/$id': typeof DocumentsIdRouteWithChildren
+  '/documents': typeof DocumentsIndexRoute
+  '/documents/$id/ocr': typeof DocumentsIdOcrRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/edit': typeof EditRoute
+  '/pages': typeof PagesRoute
+  '/preview': typeof PreviewRoute
+  '/scan': typeof ScanRoute
+  '/settings': typeof SettingsRoute
+  '/documents/$id': typeof DocumentsIdRouteWithChildren
+  '/documents/': typeof DocumentsIndexRoute
+  '/documents/$id/ocr': typeof DocumentsIdOcrRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/edit'
+    | '/pages'
+    | '/preview'
+    | '/scan'
+    | '/settings'
+    | '/documents/$id'
+    | '/documents/'
+    | '/documents/$id/ocr'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/edit'
+    | '/pages'
+    | '/preview'
+    | '/scan'
+    | '/settings'
+    | '/documents/$id'
+    | '/documents'
+    | '/documents/$id/ocr'
+  id:
+    | '__root__'
+    | '/'
+    | '/edit'
+    | '/pages'
+    | '/preview'
+    | '/scan'
+    | '/settings'
+    | '/documents/$id'
+    | '/documents/'
+    | '/documents/$id/ocr'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EditRoute: typeof EditRoute
+  PagesRoute: typeof PagesRoute
+  PreviewRoute: typeof PreviewRoute
+  ScanRoute: typeof ScanRoute
+  SettingsRoute: typeof SettingsRoute
+  DocumentsIdRoute: typeof DocumentsIdRouteWithChildren
+  DocumentsIndexRoute: typeof DocumentsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scan': {
+      id: '/scan'
+      path: '/scan'
+      fullPath: '/scan'
+      preLoaderRoute: typeof ScanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/preview': {
+      id: '/preview'
+      path: '/preview'
+      fullPath: '/preview'
+      preLoaderRoute: typeof PreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pages': {
+      id: '/pages'
+      path: '/pages'
+      fullPath: '/pages'
+      preLoaderRoute: typeof PagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/edit': {
+      id: '/edit'
+      path: '/edit'
+      fullPath: '/edit'
+      preLoaderRoute: typeof EditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +190,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/documents/': {
+      id: '/documents/'
+      path: '/documents'
+      fullPath: '/documents/'
+      preLoaderRoute: typeof DocumentsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/documents/$id': {
+      id: '/documents/$id'
+      path: '/documents/$id'
+      fullPath: '/documents/$id'
+      preLoaderRoute: typeof DocumentsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/documents/$id/ocr': {
+      id: '/documents/$id/ocr'
+      path: '/ocr'
+      fullPath: '/documents/$id/ocr'
+      preLoaderRoute: typeof DocumentsIdOcrRouteImport
+      parentRoute: typeof DocumentsIdRoute
+    }
   }
 }
 
+interface DocumentsIdRouteChildren {
+  DocumentsIdOcrRoute: typeof DocumentsIdOcrRoute
+}
+
+const DocumentsIdRouteChildren: DocumentsIdRouteChildren = {
+  DocumentsIdOcrRoute: DocumentsIdOcrRoute,
+}
+
+const DocumentsIdRouteWithChildren = DocumentsIdRoute._addFileChildren(
+  DocumentsIdRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EditRoute: EditRoute,
+  PagesRoute: PagesRoute,
+  PreviewRoute: PreviewRoute,
+  ScanRoute: ScanRoute,
+  SettingsRoute: SettingsRoute,
+  DocumentsIdRoute: DocumentsIdRouteWithChildren,
+  DocumentsIndexRoute: DocumentsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
